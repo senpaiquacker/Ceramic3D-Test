@@ -77,9 +77,9 @@ public class Matrix4x4EqualityComparer : IEqualityComparer<Matrix4x4>
 {
     bool IEqualityComparer<Matrix4x4>.Equals(Matrix4x4 x, Matrix4x4 y)
     {
-        return Vector3.Distance(x.ExtractPosition(), y.ExtractPosition()) <= 0.0001f &&
-               Quaternion.Angle(x.ExtractRotation(), y.ExtractRotation()) <= 0.0001f &&
-               Vector3.Distance(x.ExtractScale(), y.ExtractScale())       <= 0.0001f;
+        return Vector3.Distance(x.ExtractPosition(), y.ExtractPosition()) <= 0.01f &&
+               Quaternion.Angle(x.ExtractRotation(), y.ExtractRotation()) <= 0.01f &&
+               Vector3.Distance(x.ExtractScale(), y.ExtractScale())       <= 0.01f;
     }
 
     int IEqualityComparer<Matrix4x4>.GetHashCode(Matrix4x4 obj)
