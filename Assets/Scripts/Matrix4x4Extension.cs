@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Matrix4x4Extension
@@ -61,7 +62,7 @@ public static class Matrix4x4Extension
         {
             for(int j = 0; j < 4; j++)
             {
-                if(matrix[i,j] != other[i,j])
+                if(Mathf.Abs(matrix[i,j] - other[i,j]) > 0.001f)
                 {
                     isEqual = false;
                     break;
@@ -69,5 +70,20 @@ public static class Matrix4x4Extension
             }
         }
         return isEqual;
+    }
+}
+
+public class Matrix4x4EqualityComparer : IEqualityComparer<Matrix4x4>
+{
+    bool IEqualityComparer<Matrix4x4>.Equals(Matrix4x4 x, Matrix4x4 y)
+    {
+        return Vector3.Distance(x.ExtractPosition(), y.ExtractPosition()) <= 0.0001f &&
+               Quaternion.Angle(x.ExtractRotation(), y.ExtractRotation()) <= 0.0001f &&
+               Vector3.Distance(x.ExtractScale(), y.ExtractScale())       <= 0.0001f;
+    }
+
+    int IEqualityComparer<Matrix4x4>.GetHashCode(Matrix4x4 obj)
+    {
+        return obj.GetHashCode();
     }
 }

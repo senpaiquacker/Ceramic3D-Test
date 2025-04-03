@@ -9,6 +9,12 @@ public static class JsonImportExtension
         Matrix4x4Array jsons = JsonUtility.FromJson<Matrix4x4Array>("{\"matrices\":" + json + "}");
         return jsons.matrices.Select(a => a.ToRealMatrix()).ToArray();
     }
+    public static void WriteToJson(Matrix4x4[] matrices, string filename)
+    {
+        Matrix4x4Array mJsons = new Matrix4x4Array();
+        mJsons.matrices = matrices.Select(a => JsonMatrix4x4.FromRealMatrix(a)).ToArray();
+        System.IO.File.WriteAllText(filename, JsonUtility.ToJson(mJsons));
+    }
     [System.Serializable]
     private class Matrix4x4Array
     {
@@ -61,6 +67,15 @@ public static class JsonImportExtension
                             float.Parse(m23, CultureInfo.InvariantCulture), 
                             float.Parse(m33, CultureInfo.InvariantCulture))
                 );
+            return answ;
+        }
+        public static JsonMatrix4x4 FromRealMatrix(Matrix4x4 real)
+        {
+            var answ = new JsonMatrix4x4();
+            answ.m00 = real.m00.ToString(); answ.m10 = real.m10.ToString(); answ.m20 = real.m20.ToString(); answ.m30 = real.m30.ToString();
+            answ.m00 = real.m01.ToString(); answ.m11 = real.m10.ToString(); answ.m21 = real.m20.ToString(); answ.m31 = real.m30.ToString();
+            answ.m00 = real.m02.ToString(); answ.m12 = real.m10.ToString(); answ.m22 = real.m20.ToString(); answ.m32 = real.m30.ToString();
+            answ.m00 = real.m03.ToString(); answ.m13 = real.m10.ToString(); answ.m23 = real.m20.ToString(); answ.m33 = real.m30.ToString();
             return answ;
         }
     }
